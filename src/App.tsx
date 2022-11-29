@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import {v4 as uuid} from "uuid";
 
 interface Weather {
   temperature: string,
@@ -17,6 +18,16 @@ function App() {
   const [searchedCity, setSearchedCity] = useState("São Paulo");
   const [weather, setWeather] = useState<Weather>();
   const [city, setCity] = useState("");
+  const [loading, setIsLoading] = useState("");
+
+  const translateCurrentWeatherTable = {
+    "Partly cloudy": "Parcialmente nublado",
+    "Clear": "Tempo limpo",
+    "Light snow": "Neve leve",
+    "Sunny": "Ensolarado",
+    "Rain with thunderstorm": "Chuva com tempestade",
+    "Patchy rain possible": "Possibilidade de chuva irregular"
+  }
 
   
 
@@ -58,13 +69,19 @@ function App() {
           <h1>{city}</h1>
           <h2>Tempo atual</h2>
           <p>{weather?.temperature}</p>
-          <p>{weather?.description}</p>
+          <p>
+            {
+              translateCurrentWeatherTable[weather?.description]
+              ? translateCurrentWeatherTable[weather?.description]
+              : weather?.description
+            }
+          </p>
 
           <h2>Previsão</h2>
           <ul>
             {weather?.forecast.map((dayForecast, index) => {
               return(
-                <li>
+                <li key={uuid()}>
                   <h3>
                     {index == 0 ? "Amanhã" 
                       : Intl.DateTimeFormat("pt-br", {weekday: "long"})
