@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import {v4 as uuid} from "uuid";
+import {
+  FaSpinner,
+    FaTemperatureHigh as ThermometerIcon, 
+    FaWind as WindIcon
+} from "react-icons/fa";
 
 interface Weather {
   temperature: string,
@@ -18,7 +23,7 @@ function App() {
   const [searchedCity, setSearchedCity] = useState("São Paulo");
   const [weather, setWeather] = useState<Weather>();
   const [city, setCity] = useState("");
-  const [loading, setIsLoading] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const translateCurrentWeatherTable = {
     "Partly cloudy": "Parcialmente nublado",
@@ -41,10 +46,20 @@ function App() {
 
   useEffect(() => {
     async function getCityWeather() {
-      const response = await fetch(`https://goweather.herokuapp.com/weather/${searchedCity}`)
-      const data = await response.json();
-      setWeather(data);
-      console.log(data);
+      setIsLoading(true);
+
+      try {
+        const response = await fetch(`https://goweather.herokuapp.com/weather/${searchedCity}`)
+        const data = await response.json();
+        setWeather(data);
+        console.log(data);
+        
+      } catch (error) {
+        alert("API error")
+      } finally {
+        setIsLoading(false);
+      }
+      
     }
 
     getCityWeather()
@@ -61,7 +76,13 @@ function App() {
           value={searchedCity}
           onChange={(event: any) => setSearchedCity(event.target.value)}
           />
-        <button type="submit">Pesquisar cidade</button>
+        <button type="submit">
+          {
+            isLoading ? <FaSpinner className="loading"/>
+            : <span>Pesquisar cidade</span>
+          }
+          
+        </button>
       </form>
 
       {city && (
@@ -91,10 +112,12 @@ function App() {
                     }
                   </h3>
                   <div>
+                    <ThermometerIcon/>
                     <p>{dayForecast.temperature}</p>
                   </div>
 
                   <div>
+                    <WindIcon/>
                     <p>{dayForecast.wind}</p>
                   </div>
                 </li>
