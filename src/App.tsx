@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './App.css';
+
 import {v4 as uuid} from "uuid";
 import {
   FaSpinner,
@@ -67,10 +67,11 @@ function App() {
 
 
   return (
-    <div>
+    <div className="container h-screen w-screen mx-auto flex">
       <form action="" onSubmit={handleSubmit}>
 
         <input 
+          className="border-solid border-black border-2"
           type="text" 
           placeholder="Ex: São Paulo"
           value={searchedCity}
