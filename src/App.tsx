@@ -67,11 +67,11 @@ function App() {
 
 
   return (
-    <div className="container h-screen w-screen mx-auto flex">
+    <div className="container h-screen w-screen mx-auto border-2">
       <form action="" onSubmit={handleSubmit}>
 
         <input 
-          className="border-solid border-black border-2"
+          className="border-solid border-black border-2 w-3/4 justify-center ml-20"
           type="text" 
           placeholder="Ex: São Paulo"
           value={searchedCity}
